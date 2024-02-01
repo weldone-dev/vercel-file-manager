@@ -79,11 +79,15 @@ async function getList(pathName: string) {
     )
     const a = await Promise.race(
         list.map(v => {
-            const props = path.join(v.path, v.name)
-            if (v.isFile()) {
-                return getFile(props)
+            try {
+                const props = path.join(v.path, v.name)
+                if (v.isFile()) {
+                    return getFile(props)
+                }
+                return getFolder(props)
+            } catch (e) {
+                return  e
             }
-            return getFolder(props)
         })
     )
     return {
