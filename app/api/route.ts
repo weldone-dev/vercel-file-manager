@@ -77,7 +77,7 @@ async function getList(pathName: string) {
         path.resolve(pathName),
         {withFileTypes: true}
     )
-    const a = await Promise.all(
+    const a = await Promise.race(
         list.map(v => {
             const props = path.join(v.path, v.name)
             if (v.isFile()) {
@@ -87,7 +87,7 @@ async function getList(pathName: string) {
         })
     )
     return {
-        files: [...a],
+        files: a,
     }
 }
 const getFixturePath = (filename: string) => path.join(process.cwd(), 'public', filename)
