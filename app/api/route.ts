@@ -94,7 +94,10 @@ async function getList(pathName: string) {
 export async function GET(request: NextRequest) {
     const pathName = request.nextUrl.searchParams.get("path") || process.cwd()
     const cmd = request.nextUrl.searchParams.get("cmd") || "list"
-
+    const list = await fs.readdir(
+        path.resolve(pathName),
+        {withFileTypes: true}
+    )
     switch (cmd) {
         case "list":
             try {
@@ -108,6 +111,12 @@ export async function GET(request: NextRequest) {
                     status: e
                 }, {status: 500})
             }
-
+        case "test":
+            return NextResponse.json({
+                ok: true,
+                result: {
+                    list: list.map(v => ({name: v.name, path: v.path}))
+                }
+            }, {status: 200})
     }
 }
