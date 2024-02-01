@@ -128,5 +128,10 @@ export async function GET(request: NextRequest, response: NextResponse) {
             const response = new NextResponse(data)
             response.headers.set('content-type', 'text/plain');
             return response;
+        case "create":
+            const a = await fs.writeFile(pathName, "Hello", {encoding: "utf8"})
+            return NextResponse.json({
+                a
+            })
     }
 }
