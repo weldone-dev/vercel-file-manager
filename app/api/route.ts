@@ -95,7 +95,7 @@ async function getList(pathName: string) {
     }
 }
 const getFixturePath = (filename: string) => path.join(process.cwd(), 'public', filename)
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, response: NextResponse) {
     const pathName = request.nextUrl.searchParams.get("path") || process.cwd()
     const cmd = request.nextUrl.searchParams.get("cmd") || "list"
 
@@ -123,5 +123,10 @@ export async function GET(request: NextRequest) {
                     list: list.map(v => ({name: v.name, path: v.path}))
                 }
             }, {status: 200})
+        case "download":
+            const data = await fs.readFile(pathName)
+            const response = new NextResponse(data)
+            response.headers.set('content-type', 'text/plain');
+            return response;
     }
 }
