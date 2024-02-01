@@ -9,10 +9,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const blob = await put(filename, request.body, {
             access: 'public',
         });
-        // Here's the code for Pages API Routes:
-        // const blob = await put(filename, request, {
-        //   access: 'public',
-        // });
         return NextResponse.json(blob);
     }
     return NextResponse.json({ok: false, status: "Error, didn't body"})

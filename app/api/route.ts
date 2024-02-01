@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
                 return NextResponse.json({
                     ok: false,
                     status: e
-                }, {status: 200})
+                }, {status: 500})
             }
 
     }
