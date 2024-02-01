@@ -29,18 +29,7 @@ interface IFolder {
 
 type IList = (IFiles | IFolder)[]
 
-export async function GET(request: NextRequest) {
-    const pathName = request.nextUrl.searchParams.get("path") || process.cwd()
-    const cmd = request.nextUrl.searchParams.get("cmd") || "list"
 
-    switch (cmd) {
-        case "list":
-            return NextResponse.json({
-                ok: true,
-                result: await getList(pathName)
-            }, {status: 200})
-    }
-}
 
 async function getInfo(pathName: string) {
     const stat = await fs.stat(pathName)
@@ -99,5 +88,26 @@ async function getList(pathName: string) {
     )
     return {
         files: [...a],
+    }
+}
+
+export async function GET(request: NextRequest) {
+    const pathName = request.nextUrl.searchParams.get("path") || process.cwd()
+    const cmd = request.nextUrl.searchParams.get("cmd") || "list"
+
+    switch (cmd) {
+        case "list":
+            try {
+                return NextResponse.json({
+                    ok: true,
+                    result: await getList(pathName)
+                }, {status: 200})
+            } catch (e) {
+                return NextResponse.json({
+                    ok: false,
+                    status: e
+                }, {status: 200})
+            }
+
     }
 }
