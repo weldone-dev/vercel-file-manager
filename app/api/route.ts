@@ -96,7 +96,7 @@ async function getList(pathName: string) {
 }
 const getFixturePath = (filename: string) => path.join(process.cwd(), 'public', filename)
 export async function GET(request: NextRequest) {
-    const pathName = request.nextUrl.searchParams.get("path") || path.join(process.cwd(), 'public')
+    const pathName = request.nextUrl.searchParams.get("path") || process.cwd()
     const cmd = request.nextUrl.searchParams.get("cmd") || "list"
 
     switch (cmd) {
