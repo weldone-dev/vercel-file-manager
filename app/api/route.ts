@@ -94,7 +94,8 @@ async function getList(pathName: string) {
         files: [...a]
     }
 }
-const getFixturePath = (filename: string) => path.join(process.cwd(), 'public', filename)
+const getPublicPath = (filename: string) => path.join(process.cwd(), 'public', filename)
+const getSrcPath = (filename: string) => path.join(process.cwd(), 'src', filename)
 export async function GET(request: NextRequest, response: NextResponse) {
     const pathName = request.nextUrl.searchParams.get("path") || process.cwd()
     const cmd = request.nextUrl.searchParams.get("cmd") || "list"
@@ -114,9 +115,10 @@ export async function GET(request: NextRequest, response: NextResponse) {
             }
         case "test":
             const list = await fs.readdir(
-                getFixturePath(pathName),
+                getPublicPath(pathName),
                 {withFileTypes: true}
             )
+            getSrcPath("")
             return NextResponse.json({
                 ok: true,
                 result: {
